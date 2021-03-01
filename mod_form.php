@@ -40,9 +40,25 @@ class mod_timelinetest_mod_form extends moodleform_mod {
      *
      * @return void
      */
-    public function definition() {
-
+    function definition() {
+        global $CFG, $DB;
+        $mform =& $this->_form;
+        // Time Line Form Elements
+        $mform->addElement('header', 'general', "Timeline Test");
+        $mform->addElement('text', 'title', "Title", array('size'=>'64'));
+        if (!empty($CFG->formatstringstriptags)) {
+            $mform->setType('title', PARAM_TEXT);
+        } else {
+            $mform->setType('title', PARAM_CLEANHTML);
+        }
+        $mform->addRule('title', null, 'required', null, 'client');
+        // End
+        $this->standard_coursemodule_elements();
+        // buttons
+        $this->add_action_buttons();
     }
+
+
 
 
 }
