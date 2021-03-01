@@ -20,18 +20,73 @@
             </INDEXES>
         </TABLE>
 
-        <TABLE NAME="timelinephases" COMMENT="Stores data about the tags that a question must have so that it can be selected for a quiz slot (when having a random question by tags on that slot).">
+        <TABLE NAME="timelinephases" COMMENT="Stores data about phases in timeline.">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="timelinetestid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the timelinetest this phase is part of."/>
                 <FIELD NAME="phasetitle" TYPE="char" LENGTH="255" NOTNULL="true" DEFAULT="" SEQUENCE="false" COMMENT="Title of the phase."/>
                 <FIELD NAME="description" TYPE="text" NOTNULL="true" SEQUENCE="false" DEFAULT="" COMMENT="Description of the phase."/>
+                <FIELD NAME="type" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" DEFAULT="" COMMENT="Enum field for phase type (Options: Info/Interactive)."/>
+                <FIELD NAME="markthreshold" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Minimum mark the user needs to see this phase."/>
                 <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The time when the phase was added."/>
                 <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Last modified time."/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
                 <KEY NAME="timelinetestid" TYPE="foreign" FIELDS="timelinetestid" REFTABLE="timelinetest" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="timelineoptions" COMMENT="Stores options data for interactive phases.">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="timelinetestid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the timelinetest this phase is part of."/>
+                <FIELD NAME="timelinephase" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the timelinephases."/>
+                <FIELD NAME="description" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" DEFAULT="" COMMENT="Description of the option."/>
+                <FIELD NAME="maxmark" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Maximum mark the user will obtain if he/she chooses this option."/>
+                <FIELD NAME="nextphase" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Id of the next phase if user chooses this option."/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The time when this row was added."/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Last modified time."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="timelinetestid" TYPE="foreign" FIELDS="timelinetestid" REFTABLE="timelinetest" REFFIELDS="id"/>
+                <KEY NAME="timelinephase" TYPE="foreign" FIELDS="timelinephase" REFTABLE="timelinephases" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="timelineattemptlog" COMMENT="Attempt log for each phases in timeline.">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="timelinetestid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the timelinetest this phase is part of."/>
+                <FIELD NAME="timelinephase" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the timelinephases."/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the user table."/>
+                <FIELD NAME="phaseresponse" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" DEFAULT="" COMMENT="Logs the data of the option chosen by the user."/>
+                <FIELD NAME="obtainedmark" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Maximum mark the user will obtain if he/she chooses this option."/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The time when this row was added."/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Last modified time."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="timelinetestid" TYPE="foreign" FIELDS="timelinetestid" REFTABLE="timelinetest" REFFIELDS="id"/>
+                <KEY NAME="timelinephase" TYPE="foreign" FIELDS="timelinephase" REFTABLE="timelinephases" REFFIELDS="id"/>
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="timelinetotalmark" COMMENT="Total mark of a user for a timeline test.">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="timelinetestid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the timelinetest this phase is part of."/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the user table."/>
+                <FIELD NAME="obtainedmark" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Maximum mark the user will obtain if he/she chooses this option."/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The time when this row was added."/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Last modified time."/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="timelinetestid" TYPE="foreign" FIELDS="timelinetestid" REFTABLE="timelinetest" REFFIELDS="id"/>
+                <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
             </KEYS>
         </TABLE>
     </TABLES>
