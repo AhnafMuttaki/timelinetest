@@ -36,7 +36,7 @@ $templatecontext = (object)[
 
 $title = $course->shortname . ': '.$cm->name;
 $PAGE->set_url(new moodle_url('/mod/timelinetest/view.php'));
-$PAGE->set_context(\context_system::instance());
+$PAGE->set_context($context);
 $PAGE->set_title($title);
 
 echo $OUTPUT->header();

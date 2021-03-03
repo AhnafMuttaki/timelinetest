@@ -36,7 +36,7 @@ class phase extends moodleform {
 
         $mform->addElement('editor', 'description', "Description",
             array('rows' => 15));
-        $mform->setType('questioninfo', PARAM_RAW);
+        $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', null, 'required', null, 'client');
 
         $choices = array();

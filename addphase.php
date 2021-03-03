@@ -76,7 +76,7 @@ if ($mform->is_cancelled()) {
             }
         }
 
-        $url = new moodle_url("/mod/timelinetest/view.php?id=$id");
+        $url = new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id");
         redirect($url, 'Successfully saved phase data.');
 }
 echo $OUTPUT->header();
