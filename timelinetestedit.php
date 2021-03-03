@@ -1,5 +1,6 @@
 <?php
 require_once("../../config.php");
+require_once($CFG->dirroot. '/mod/timelinetest/classes/form/phaselist.php');
 require_login();
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID, or ...
 
@@ -24,23 +25,25 @@ $timelinetest = $DB->get_record_sql("SELECT * FROM {timelinetest} WHERE id=:id",
 if(!$timelinetest){
     print_error('invalidcoursemodule');
 }
-
-$timelinephases = $DB->get_records_sql("SELECT * FROM {timelinephases} WHERE timelinetestid=:id", array('id'=>$cm->instance));
-
 // Initialize $PAGE, compute blocks.
 $PAGE->set_url('/mod/timelinetest/timelinetestedit.php', array('id' => $cm->id));
 $templatecontext = (object)[
     'timelinedata' => array((array)$timelinetest),
-    'timelinephases' => (array)$timelinephases,
-    'phasecount'=>count($timelinephases),
     'addphaseurl' => new moodle_url("/mod/timelinetest/addphase.php?id=$id"),
 ];
 
 $title = $course->shortname . ': '.$cm->name.":"."Edit";
-$PAGE->set_url(new moodle_url('/mod/timelinetest/view.php'));
-$PAGE->set_context(context_system::instance());
+$PAGE->set_context($context);
 $PAGE->set_title($title);
+
+$actionUrl = new moodle_url("/mod/timelinetest/timelinetestedit.php");
+$formcustomData = array();
+$formcustomData["cmid"] = $id;
+$formcustomData["timelinetestid"] = $timelinetest->id;
+
+$mform = new phaselist($actionUrl,$formcustomData,'post','',null,true,null);
 
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('mod_timelinetest/edit', $templatecontext);
+$mform->display();
 echo $OUTPUT->footer();

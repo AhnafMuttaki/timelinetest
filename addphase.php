@@ -28,7 +28,7 @@ $PAGE->set_title($title);
 $formcustomData = array();
 $formcustomData["cmid"] = $id;
 $actionUrl = new moodle_url("/mod/timelinetest/addphase.php");
-$mform = new phase($actionUrl,$formcustomData,'post','',null,true,null,$id);
+$mform = new phase($actionUrl,$formcustomData,'post','',null,true,null);
 
 if ($mform->is_cancelled()) {
     // Go back to the manage.php page

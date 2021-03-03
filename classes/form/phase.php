@@ -1,6 +1,6 @@
 <?php
 
-/** @package local_massage
+/** @package mod_timelinetest
  *  @author Ahnaf
  *  @license http://www.gnu.org
  */
@@ -10,7 +10,7 @@ global $CFG;
 require_once("$CFG->libdir/formslib.php");
 
 class phase extends moodleform {
-    public function __construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata,$cmid)
+    public function __construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata)
     {
         parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
 
