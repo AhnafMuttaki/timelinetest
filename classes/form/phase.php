@@ -23,47 +23,46 @@ class phase extends moodleform {
         $id = $customdata["cmid"];
 
         $mform = $this->_form; // Don't forget the underscore!
-        $mform->addElement('header', 'general', "Add Phase");
+        $mform->addElement('header', 'general', get_string('addphaseheading', 'timelinetest'));
 
         $mform->addElement('hidden','id',$id);
         $mform->setType('id', PARAM_RAW);
 
-        $mform->addElement('text', 'phasetitle', 'Title'); // Add elements to your form
+        $mform->addElement('text', 'phasetitle', get_string('addphasetitlelabel', 'timelinetest')); // Add elements to your form
         $mform->setType('phasetitle', PARAM_NOTAGS);                   //Set type of element
         $mform->addRule('phasetitle', null, 'required', null, 'client');
         // $mform->addHelpButton('phasetitle', 'phasetitle', 'mod_timelinetest');
         // $mform->setDefault('phasetitle', 'Please enter a title');        //Default value
 
-        $mform->addElement('editor', 'description', "Description",
+        $mform->addElement('editor', 'description', get_string('addphasedescriptionlabel', 'timelinetest'),
             array('rows' => 15));
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', null, 'required', null, 'client');
 
         $choices = array();
-        $choices[''] = "Select";
-        $choices['Informative'] = "Informative";
-        $choices['Interactive'] = "Interactive";
+        $choices[''] = get_string('phasetypeoptiondefault', 'timelinetest');
+        $choices['Informative'] = get_string('phasetypeoption1', 'timelinetest');
+        $choices['Interactive'] = get_string('phasetypeoption2', 'timelinetest');
 
-        $mform->addElement('select', 'phasetype', 'Type',$choices,array('id'=>'phasetype')); // Add elements to your form
+        $mform->addElement('select', 'phasetype', get_string('phasetypelabel', 'timelinetest'),$choices,array('id'=>'phasetype')); // Add elements to your form
         $mform->setDefault('phasetype','');
         $mform->addRule('phasetype', null, 'required', null, 'client');
 
-
         $mform->addElement('html',"<div id='options-div' style='display: none'>");
 
-        $mform->addElement('text', 'option1', 'Option 1'); // Add elements to your form
+        $mform->addElement('text', 'option1', get_string('phaseoptionlabel1', 'timelinetest')); // Add elements to your form
         $mform->setType('option1', PARAM_NOTAGS);                   //Set type of element
         // $mform->setDefault('option-1', 'Please enter a option text');
 
-        $mform->addElement('text', 'option2', 'Option 2'); // Add elements to your form
+        $mform->addElement('text', 'option2', get_string('phaseoptionlabel2', 'timelinetest')); // Add elements to your form
         $mform->setType('option2', PARAM_NOTAGS);                   //Set type of element
         // $mform->setDefault('option-2', 'Please enter a option text');
 
-        $mform->addElement('text', 'option3', 'Option 3'); // Add elements to your form
+        $mform->addElement('text', 'option3', get_string('phaseoptionlabel3', 'timelinetest')); // Add elements to your form
         $mform->setType('option3', PARAM_NOTAGS);                   //Set type of element
         // $mform->setDefault('option-3', 'Please enter a option text');
 
-        $mform->addElement('text', 'option4', 'Option 4'); // Add elements to your form
+        $mform->addElement('text', 'option4', get_string('phaseoptionlabel4', 'timelinetest')); // Add elements to your form
         $mform->setType('option4', PARAM_NOTAGS);                   //Set type of element
         // $mform->setDefault('option-4', 'Please enter a option text');
 
@@ -88,21 +87,21 @@ class phase extends moodleform {
         $messages = array();
         if(trim($title) == ""){
             $valid = false;
-            array_push($messages,"Title can not be null or empty string.");
+            array_push($messages,get_string('validation:emptytitle', 'timelinetest'));
         }
         if(trim($description) == ""){
             $valid = false;
-            array_push($messages,"Description can not be null or empty string.");
+            array_push($messages,get_string('validation:emptydescription', 'timelinetest'));
         }
         if(trim($phasetype) == ""){
             $valid = false;
-            array_push($messages,"Phase type can not be null or empty string.");
+            array_push($messages,get_string('validation:emptyphasetype', 'timelinetest'));
         }
         if($phasetype == "Interactive"){
             $options=$option1.$option2.$option3.$option4;
             if(trim($options) == ""){
                 $valid = false;
-                array_push($messages,"You have to provide options if the phase type is interactive.");
+                array_push($messages,get_string('validation:emptyoptionlist', 'timelinetest'));
             }
         }
 

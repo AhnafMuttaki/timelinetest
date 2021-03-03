@@ -25,19 +25,21 @@ class phaselist extends moodleform
         foreach ($timelinephases as $key=>$value){
             $url = new moodle_url("/mod/timelinetest/editphase.php?id=$cmid&phaseid=$value->id");
 
+            $phasetitlelabel = get_string('phasetitlelabel', 'timelinetest');
             $mform->addElement('html', "<br/>");
-            $mform->addElement('html', "<label >Phase Title:</label><br/>");
+            $mform->addElement('html', "<label >$phasetitlelabel</label><br/>");
             $mform->addElement('html', "<input type='text' name='phase-title-$value->id' value='$value->phasetitle' readonly>");
 
+            $editbtnlabel = get_string('editbtnlabel', 'timelinetest');
             if($value->type == "Interactive"){
                 $mform->addElement('html', "<br/>");
                 $mform->addElement('html', "<br/>");
-                $mform->addElement('html', "<a class='btn btn-warning' href='$url'>Edit</a>");
+                $mform->addElement('html', "<a class='btn btn-warning' href='$url'>$editbtnlabel</a>");
             }
             else{
                 $mform->addElement('html', "<br/>");
                 $mform->addElement('html', "<br/>");
-                $mform->addElement('html', "<a class='btn btn-info' href='$url'>Edit</a>");
+                $mform->addElement('html', "<a class='btn btn-info' href='$url'>$editbtnlabel</a>");
             }
 
             $mform->addElement('html', "<br/>");

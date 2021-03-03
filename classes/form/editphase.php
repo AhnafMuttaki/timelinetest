@@ -28,7 +28,7 @@ class editphase extends moodleform
         $phaselist = $customdata["phaselist"];
 
         $mform = $this->_form; // Don't forget the underscore!
-        $mform->addElement('header', 'general', "Edit Phase");
+        $mform->addElement('header', 'general', get_string('phaseedit:editheading', 'timelinetest'));
 
         // Course Module ID
         $mform->addElement('hidden','id',$id);
@@ -39,36 +39,36 @@ class editphase extends moodleform
         $mform->setType('phaseid', PARAM_RAW);
 
         // Phase Title
-        $mform->addElement('text', 'phasetitle', 'Title'); // Add elements to your form
+        $mform->addElement('text', 'phasetitle', get_string('addphasetitlelabel', 'timelinetest')); // Add elements to your form
         $mform->setType('phasetitle', PARAM_NOTAGS);                   //Set type of element
         $mform->setDefault('phasetitle',$phase->phasetitle);
         $mform->addRule('phasetitle', null, 'required', null, 'client');
 
         // Phase Description
-        $mform->addElement('editor', 'description', "Description",
+        $mform->addElement('editor', 'description', get_string('addphasedescriptionlabel', 'timelinetest'),
             array('rows' => 15));
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', "", 'required', null, 'client');
 
         // Phase Type
         $choices = array();
-        $choices[''] = "Select";
-        $choices['Informative'] = "Informative";
-        $choices['Interactive'] = "Interactive";
+        $choices[''] = get_string('phasetypeoptiondefault', 'timelinetest');
+        $choices['Informative'] = get_string('phasetypeoption1', 'timelinetest');
+        $choices['Interactive'] = get_string('phasetypeoption2', 'timelinetest');
 
-        $mform->addElement('select', 'phasetype', 'Type',$choices,array('id'=>'phasetype')); // Add elements to your form
+        $mform->addElement('select', 'phasetype', get_string('phasetypelabel', 'timelinetest'),$choices,array('id'=>'phasetype')); // Add elements to your form
         $mform->addRule('phasetype', null, 'required', null, 'client');
         $mform->setDefault('phasetype',$phase->type);
 
         // Phase Mark Threshold
-        $mform->addElement('text', 'markthreshold', 'Mark Threshold'); // Add elements to your form
+        $mform->addElement('text', 'markthreshold', get_string('phasemarkthresholdlabel', 'timelinetest')); // Add elements to your form
         $mform->setType('markthreshold', PARAM_NOTAGS);                   //Set type of element
         $mform->addRule('markthreshold', null, 'required', null, 'client');
         $mform->setDefault('markthreshold',$phase->markthreshold);
 
-        if($phase->type == "Interactive"){
+        if($phase->type == get_string('phasetypeoption2', 'timelinetest')){
             if($options = $DB->get_records('timelineoptions', array('timelinephase' => $phase->id))){
-                $mform->addElement('header', 'general', "Options");
+                $mform->addElement('header', 'general', get_string('phaseedit:optionheading', 'timelinetest'));
                 $sl = 1;
 
                 foreach ($options as $key=>$option){
@@ -80,30 +80,30 @@ class editphase extends moodleform
                     $mform->setType("optionid-$sl", PARAM_RAW);
 
 
-                    $mform->addElement('text', "optiondescription-$sl", 'Option Text'); // Add elements to your form
+                    $mform->addElement('text', "optiondescription-$sl", get_string('phaseedit:optiontext', 'timelinetest')); // Add elements to your form
                     $mform->setType("optiondescription-$sl", PARAM_NOTAGS);                   //Set type of element
                     $mform->addRule("optiondescription-$sl", null, 'required', null, 'client');
                     $mform->setDefault("optiondescription-$sl",$option->description);
 
                     $maxmarkchoice = array();
-                    $maxmarkchoice[''] = "Select";
-                    $maxmarkchoice['0'] = "0%";
-                    $maxmarkchoice['50'] = "50%";
-                    $maxmarkchoice['100'] = "100%";
+                    $maxmarkchoice[''] = get_string('phaseedit:maxmarkchoicedefault', 'timelinetest');
+                    $maxmarkchoice['0'] = get_string('phaseedit:maxmarkchoice1', 'timelinetest');
+                    $maxmarkchoice['50'] = get_string('phaseedit:maxmarkchoice2', 'timelinetest');
+                    $maxmarkchoice['100'] = get_string('phaseedit:maxmarkchoice3', 'timelinetest');
 
-                    $mform->addElement('select', "maxmark-$sl", 'Max mark',$maxmarkchoice,array('id'=>'phasetype')); // Add elements to your form
+                    $mform->addElement('select', "maxmark-$sl", get_string('phaseedit:maxmarklabel', 'timelinetest'),$maxmarkchoice,array('id'=>'phasetype')); // Add elements to your form
                     $mform->addRule("maxmark-$sl", null, 'required', null, 'client');
                     $mform->setDefault("maxmark-$sl",$option->maxmark);
 
                     // Next phase
                     $phaselistchoice = array();
-                    $phaselistchoice["0"] = "Select";
+                    $phaselistchoice["0"] = get_string('phaseedit:nextphasedefault', 'timelinetest');
                     foreach ($phaselist as $phaserow){
                         $phaselistchoice[$phaserow->id] = $phaserow->phasetitle;
                     }
-                    $phaselistchoice["-1"] = "Finish";
+                    $phaselistchoice["-1"] = get_string('phaseedit:nextphasefinish', 'timelinetest');
 
-                    $mform->addElement('select', "nextphase-$sl", 'Next Phase',$phaselistchoice,array('id'=>'phasetype')); // Add elements to your form
+                    $mform->addElement('select', "nextphase-$sl", get_string('phaseedit:nextphaselabel', 'timelinetest'),$phaselistchoice,array('id'=>'phasetype')); // Add elements to your form
                     $mform->setDefault("nextphase-$sl",$option->nextphase);
 
                     $sl += 1;

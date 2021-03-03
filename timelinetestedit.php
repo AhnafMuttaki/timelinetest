@@ -30,6 +30,9 @@ $PAGE->set_url('/mod/timelinetest/timelinetestedit.php', array('id' => $cm->id))
 $templatecontext = (object)[
     'timelinedata' => array((array)$timelinetest),
     'addphaseurl' => new moodle_url("/mod/timelinetest/addphase.php?id=$id"),
+    'editpagetitle' => get_string('editpagetitle', 'timelinetest'),
+    'generalinfo' => get_string('generalinfo', 'timelinetest'),
+    'phases' => get_string('phases', 'timelinetest')
 ];
 
 $title = $course->shortname . ': '.$cm->name.":"."Edit";

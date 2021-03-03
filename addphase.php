@@ -32,7 +32,7 @@ $mform = new phase($actionUrl,$formcustomData,'post','',null,true,null);
 
 if ($mform->is_cancelled()) {
     // Go back to the manage.php page
-    redirect($CFG->wwwroot.'/mod/timelinetest/view.php', 'You cancelled the message form');
+    redirect($CFG->wwwroot.'/mod/timelinetest/view.php', get_string('formcancel', 'timelinetest'));
 } else if ($fromform = $mform->get_data()) {
         $title = $fromform->phasetitle;
         $descriptiondata = $fromform->description;

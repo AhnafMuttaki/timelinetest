@@ -43,9 +43,9 @@ class mod_timelinetest_mod_form extends moodleform_mod {
     function definition() {
         global $CFG, $DB;
         $mform =& $this->_form;
-        // Time Line Form Elements
-        $mform->addElement('header', 'general', "Timeline Test");
-        $mform->addElement('text', 'title', "Title", array('size'=>'64'));
+        // TimeLine Form Elements
+        $mform->addElement('header', 'general', get_string('modulename', 'timelinetest'));
+        $mform->addElement('text', 'title', get_string('title', 'timelinetest'), array('size'=>'64'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('title', PARAM_TEXT);
         } else {

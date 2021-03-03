@@ -52,7 +52,7 @@ $mform = new editphase($actionUrl,$customdata,'post','',null,true,null);
 
 if ($mform->is_cancelled()) {
     // Go back to the manage.php page
-    redirect($CFG->wwwroot.'/mod/timelinetest/view.php', 'You cancelled the message form');
+    redirect($CFG->wwwroot.'/mod/timelinetest/view.php', get_string('formcancel', 'timelinetest'));
 } else if ($fromform = $mform->get_data()) {
     $id = $fromform->id;
 
@@ -120,7 +120,7 @@ if ($mform->is_cancelled()) {
     }
 
     $url = new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id");
-    redirect($url, 'Successfully saved phase data.');
+    redirect($url, get_string('successphasedatasave', 'timelinetest'));
 }
 
 // Initialize $PAGE, compute blocks.
