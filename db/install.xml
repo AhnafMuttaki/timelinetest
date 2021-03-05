@@ -62,7 +62,9 @@
                 <FIELD NAME="timelinephase" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the timelinephases."/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key reference to the user table."/>
                 <FIELD NAME="phaseresponse" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" DEFAULT="" COMMENT="Logs the data of the option chosen by the user."/>
-                <FIELD NAME="obtainedmark" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Maximum mark the user will obtain if he/she chooses this option."/>
+                <FIELD NAME="nextphase" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID of the nextphase determined from user response."/>
+                <FIELD NAME="status" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Status 0 for viewed and 1 for attempted."/>
+                <FIELD NAME="obtainedmark" TYPE="text" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Maximum mark the user will obtain if he/she chooses this option."/>
                 <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="The time when this row was added."/>
                 <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Last modified time."/>
             </FIELDS>
