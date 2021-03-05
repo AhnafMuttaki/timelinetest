@@ -42,7 +42,6 @@ if(!$phaselist){
     print_error('invalidcoursemodule');
 }
 
-
 $customdata = array();
 $customdata["cmid"] = $id;
 $customdata["phaselist"] = $phaselist;
@@ -83,20 +82,27 @@ if ($mform->is_cancelled()) {
     $DB->execute($sql, $params);
 
     if($phasetype == "Interactive"){
-        // Update Options
+        // Interactive phase has 4 options
         $optionsl = array(1,2,3,4);
-        foreach ($optionsl as $sl){
-            $idProp = "optionid-$sl";
-            $descriptionProp = "optiondescription-$sl";
-            $maxmarkProp = "maxmark-$sl";
-            $nextphaseProp = "nextphase-$sl";
 
-            $optionid = $fromform->$idProp;
-            $optiondescription = $fromform->$descriptionProp;
-            $maxmark = $fromform->$maxmarkProp;
-            $nextphase = $fromform->$nextphaseProp;
+    }
+    else if($phasetype == "Informative"){
+        // Informative phase has 1 default option
+        $optionsl = array(1);
+    }
 
-            $sql = "UPDATE {timelineoptions} 
+    foreach ($optionsl as $sl){
+        $idProp = "optionid-$sl";
+        $descriptionProp = "optiondescription-$sl";
+        $maxmarkProp = "maxmark-$sl";
+        $nextphaseProp = "nextphase-$sl";
+
+        $optionid = $fromform->$idProp;
+        $optiondescription = $fromform->$descriptionProp;
+        $maxmark = $fromform->$maxmarkProp;
+        $nextphase = $fromform->$nextphaseProp;
+
+        $sql = "UPDATE {timelineoptions} 
             SET 
             description = :description, 
             maxmark=:maxmark, 
@@ -104,19 +110,14 @@ if ($mform->is_cancelled()) {
             timemodified=:now
             WHERE id=:id";
 
-            $params = array();
-            $params["id"] = $optionid;
-            $params["description"] = $optiondescription;
-            $params["maxmark"] = $maxmark;
-            $params["nextphase"] = $nextphase;
-            $params["now"] = time();
+        $params = array();
+        $params["id"] = $optionid;
+        $params["description"] = $optiondescription;
+        $params["maxmark"] = $maxmark;
+        $params["nextphase"] = $nextphase;
+        $params["now"] = time();
 
-            $DB->execute($sql, $params);
-        }
-    }
-    else{
-        // Delete options if exists
-        $DB->delete_records('timelineoptions', array("timelinephase" => $phaseid));
+        $DB->execute($sql, $params);
     }
 
     $url = new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id");

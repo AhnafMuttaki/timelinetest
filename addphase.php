@@ -74,6 +74,13 @@ if ($mform->is_cancelled()) {
                     $optionid = $DB->insert_record('timelineoptions', $phaseoption);
                 }
             }
+        }else if($phasetype == "Informative"){
+            $phaseoption = new stdClass();
+            $phaseoption->timelinetestid = $timelinetest->id;
+            $phaseoption->timelinephase = $timelinephaseid;
+            $phaseoption->description = "next";
+            $phaseoption->timecreated = time();
+            $optionid = $DB->insert_record('timelineoptions', $phaseoption);
         }
 
         $url = new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id");

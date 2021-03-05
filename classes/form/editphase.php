@@ -50,6 +50,7 @@ class editphase extends moodleform
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', "", 'required', null, 'client');
 
+
         // Phase Type
         $choices = array();
         $choices[''] = get_string('phasetypeoptiondefault', 'timelinetest');
@@ -66,7 +67,7 @@ class editphase extends moodleform
         $mform->addRule('markthreshold', null, 'required', null, 'client');
         $mform->setDefault('markthreshold',$phase->markthreshold);
 
-        if($phase->type == get_string('phasetypeoption2', 'timelinetest')){
+        if($phase->type == 'Interactive'){
             if($options = $DB->get_records('timelineoptions', array('timelinephase' => $phase->id))){
                 $mform->addElement('header', 'general', get_string('phaseedit:optionheading', 'timelinetest'));
                 $sl = 1;
@@ -110,6 +111,36 @@ class editphase extends moodleform
                 }
             }
         }
+        else{
+            if($options = $DB->get_records('timelineoptions', array('timelinephase' => $phase->id))){
+                $sl = 1;
+                foreach ($options as $key=>$option){
+                    $mform->addElement('hidden',"optionid-$sl",$option->id);
+                    $mform->setType("optionid-$sl", PARAM_RAW);
+
+                    $mform->addElement('hidden',"optiondescription-$sl",$option->description);
+                    $mform->setType("optiondescription-$sl", PARAM_RAW);
+
+                    $mform->addElement('hidden',"maxmark-$sl","100");
+                    $mform->setType("maxmark-$sl", PARAM_RAW);
+
+                    // Next phase
+                    $phaselistchoice = array();
+                    $phaselistchoice["0"] = get_string('phaseedit:nextphasedefault', 'timelinetest');
+                    foreach ($phaselist as $phaserow){
+                        $phaselistchoice[$phaserow->id] = $phaserow->phasetitle;
+                    }
+                    $phaselistchoice["-1"] = get_string('phaseedit:nextphasefinish', 'timelinetest');
+
+                    $mform->addElement('select', "nextphase-$sl", get_string('phaseedit:nextphaselabel', 'timelinetest'),$phaselistchoice,array('id'=>'phasetype')); // Add elements to your form
+                    $mform->setDefault("nextphase-$sl",$option->nextphase);
+
+                    $sl += 1;
+                }
+            }
+            $mform->addElement('hidden','optionid',$phase->id);
+        }
+
         $this->add_action_buttons();
     }
 
