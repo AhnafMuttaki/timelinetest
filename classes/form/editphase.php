@@ -49,7 +49,7 @@ class editphase extends moodleform
             array('rows' => 15));
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', "", 'required', null, 'client');
-
+        $mform->setDefault('description',array('text'=>$phase->description,'format'=>'1'));
 
         // Phase Type
         $choices = array();
@@ -69,7 +69,7 @@ class editphase extends moodleform
 
         if($phase->type == 'Interactive'){
             if($options = $DB->get_records('timelineoptions', array('timelinephase' => $phase->id))){
-                $mform->addElement('header', 'general', get_string('phaseedit:optionheading', 'timelinetest'));
+                $mform->addElement('header', 'options_header', get_string('phaseedit:optionheading', 'timelinetest'));
                 $sl = 1;
 
                 foreach ($options as $key=>$option){
@@ -92,7 +92,7 @@ class editphase extends moodleform
                     $maxmarkchoice['50'] = get_string('phaseedit:maxmarkchoice2', 'timelinetest');
                     $maxmarkchoice['100'] = get_string('phaseedit:maxmarkchoice3', 'timelinetest');
 
-                    $mform->addElement('select', "maxmark-$sl", get_string('phaseedit:maxmarklabel', 'timelinetest'),$maxmarkchoice,array('id'=>'phasetype')); // Add elements to your form
+                    $mform->addElement('select', "maxmark-$sl", get_string('phaseedit:maxmarklabel', 'timelinetest'),$maxmarkchoice,array('id'=>"maxmark-$sl")); // Add elements to your form
                     $mform->addRule("maxmark-$sl", null, 'required', null, 'client');
                     $mform->setDefault("maxmark-$sl",$option->maxmark);
 
@@ -104,7 +104,7 @@ class editphase extends moodleform
                     }
                     $phaselistchoice["-1"] = get_string('phaseedit:nextphasefinish', 'timelinetest');
 
-                    $mform->addElement('select', "nextphase-$sl", get_string('phaseedit:nextphaselabel', 'timelinetest'),$phaselistchoice,array('id'=>'phasetype')); // Add elements to your form
+                    $mform->addElement('select', "nextphase-$sl", get_string('phaseedit:nextphaselabel', 'timelinetest'),$phaselistchoice,array('id'=>"nextphase-$sl")); // Add elements to your form
                     $mform->setDefault("nextphase-$sl",$option->nextphase);
 
                     $sl += 1;
@@ -132,7 +132,7 @@ class editphase extends moodleform
                     }
                     $phaselistchoice["-1"] = get_string('phaseedit:nextphasefinish', 'timelinetest');
 
-                    $mform->addElement('select', "nextphase-$sl", get_string('phaseedit:nextphaselabel', 'timelinetest'),$phaselistchoice,array('id'=>'phasetype')); // Add elements to your form
+                    $mform->addElement('select', "nextphase-$sl", get_string('phaseedit:nextphaselabel', 'timelinetest'),$phaselistchoice,array('id'=>"nextphase-$sl")); // Add elements to your form
                     $mform->setDefault("nextphase-$sl",$option->nextphase);
 
                     $sl += 1;
