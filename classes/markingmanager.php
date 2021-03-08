@@ -20,4 +20,34 @@ class markingmanager{
         $DB->insert_record("timelinetotalmark", $score);
     }
 
+    public function updatemarking($obtainedmark){
+        global  $DB;
+        if(!$previousmark = $DB->get_record_sql("SELECT * FROM {timelinetotalmark} WHERE timelinetestid=:timelinetestid AND userid=:userid", array('timelinetestid'=>$this->timelinetestid,'userid'=>$this->userid))){
+            // Timeline test not found
+            throw new ddl_exception(get_string('error:invalid option', 'timelinetest'));
+        }
+        $totalmark = $previousmark->obtainedmark;
+        $totalmark = $totalmark + $obtainedmark;
+
+        $sql = "UPDATE {timelinetotalmark} 
+                SET obtainedmark=:totalmark,
+                timemodified=:timemodified 
+                WHERE timelinetestid=:timelinetestid AND 
+                userid=:userid";
+        $params = array(
+            "timelinetestid" => $this->timelinetestid,
+            "userid" => $this->userid,
+            "totalmark" => $totalmark,
+            "timemodified" =>time()
+        );
+        $DB->execute($sql,$params);
+    }
+
+    public function getmark(){
+        global $DB;
+        $previousmark = $DB->get_record_sql("SELECT * FROM {timelinetotalmark} WHERE timelinetestid=:timelinetestid AND userid=:userid", array('timelinetestid'=>$this->timelinetestid,'userid'=>$this->userid));
+
+        return $previousmark->obtainedmark;
+    }
+
 }

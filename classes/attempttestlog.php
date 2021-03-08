@@ -41,5 +41,38 @@ class attempttestlog {
         $DB->insert_record("timelineattemptlog", $attemptlog);
     }
 
+    public function updatelog(
+        $timelinetestid,
+        $timelinephase,
+        $userid,
+        $phaseresponse,
+        $nextphase,
+        $status,
+        $obtainedmark
+    ){
+        global $DB;
+        $sql = "UPDATE {timelineattemptlog} 
+                SET phaseresponse=:phaseresponse,
+                nextphase=:nextphase,
+                status=:status,
+                obtainedmark=:obtainedmark,
+                timemodified=:timemodified 
+                WHERE timelinetestid=:timelinetestid AND 
+                timelinephase=:timelinephase AND 
+                userid=:userid";
+        $params = array(
+            "phaseresponse" => $phaseresponse,
+            "nextphase" => $nextphase,
+            "status" => $status,
+            "obtainedmark" => $obtainedmark,
+            "timemodified" => time(),
+            "timelinetestid" => $timelinetestid,
+            "timelinephase" => $timelinephase,
+            "userid" => $userid
+        );
+        $DB->execute($sql,$params);
+
+    }
+
 
 }

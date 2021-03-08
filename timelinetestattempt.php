@@ -24,7 +24,6 @@ require_login($course, false, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/timelinetest:attempt', $context);
 
-//
 $PAGE->set_url('/mod/timelinetest/timelinetestattempt.php', array('id' => $cm->id));
 $title = $course->shortname . ': '.$cm->name.":"."Attempt";
 $PAGE->set_context($context);
@@ -43,6 +42,7 @@ $attempttestlog = new attempttestlog($userid,$timelinetestid);
 $previousAttemptLogs = $attempttestlog->getlogs();
 
 $timelinephases = array();
+$markingmanager = new markingmanager($userid,$timelinetestid);
 if(count($previousAttemptLogs)>0){
     //	if found:
     //        Check the status of last log.
@@ -61,15 +61,23 @@ if(count($previousAttemptLogs)>0){
 
     if($lastattemptstatus == 1){
         // if last log is attempted
-        if($nextphaseid !== -1){
+        if($nextphaseid !== "-1"){
             // add next phase
             $tempphase = $DB->get_record_sql("SELECT * FROM {timelinephases} WHERE id=:id ORDER BY id ASC LIMIT 1", array('id'=>$nextphaseid));
             array_push($timelinephases,$tempphase);
             //        Insert viewed log
             $attempttestlog->savelog($timelinetestid,$tempphase->id,$userid,"",0,0,0);
+
         }
         else{
             // add finish
+//            echo "finish timeline";
+//            var_dump($nextphaseid);
+//            die();
+
+            $finishphase = new stdClass();
+            $finishphase->id = "-1";
+            array_push($timelinephases,$finishphase);
 
         }
     }
@@ -83,19 +91,21 @@ else{
     //        Insert viewed log
     $attempttestlog->savelog($timelinetestid,$firstphase->id,$userid,"",0,0,0);
     //        Initiate Marking
-    $markingmanager = new markingmanager($userid,$timelinetestid);
     $markingmanager->initiatemarking();
     //        Add phase in timeline HTML
 
 
 }
+$timelinephases = array_reverse($timelinephases);
 
 $timelinebuilder = new timelinehtmlbuilder("",$id);
 $timelinehtml = $timelinebuilder->buildtimeline($timelinephases,$userid);
+$score = $markingmanager->getmark();
 
 $templatecontext = (object)[
     'timelinehtml' => $timelinehtml,
     'addphaseurl' => new moodle_url("/mod/timelinetest/addphase.php?id=$id"),
+    'score' => $score
 ];
 
 echo $OUTPUT->render_from_template('mod_timelinetest/attempt', $templatecontext);

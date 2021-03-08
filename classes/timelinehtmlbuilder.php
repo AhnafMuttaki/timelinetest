@@ -13,11 +13,14 @@ class timelinehtmlbuilder{
     public function buildtimeline($timelinephases,$userid){
         global $DB;
         foreach ($timelinephases as $key=>$phase){
-
-
-            $phaselog = $DB->get_record_sql("SELECT * FROM {timelineattemptlog} WHERE timelinephase=:timelinephase AND userid=:userid", array('timelinephase'=>$phase->id,'userid'=>$userid));
-            $phaseoptions = $DB->get_records_sql("SELECT * FROM {timelineoptions} WHERE timelinephase=:timelinephase", array('timelinephase'=>$phase->id));
-            $this->addphaseinhtml($key,$phase,$phaselog,$phaseoptions);
+            if($phase->id !== "-1"){
+                $phaselog = $DB->get_record_sql("SELECT * FROM {timelineattemptlog} WHERE timelinephase=:timelinephase AND userid=:userid", array('timelinephase'=>$phase->id,'userid'=>$userid));
+                $phaseoptions = $DB->get_records_sql("SELECT * FROM {timelineoptions} WHERE timelinephase=:timelinephase", array('timelinephase'=>$phase->id));
+                $this->addphaseinhtml($key,$phase,$phaselog,$phaseoptions);
+            }
+            else{
+                $this->addfinish($key);
+            }
         }
         return $this->finalhtml;
     }
@@ -41,6 +44,26 @@ class timelinehtmlbuilder{
         return $optionsHTML;
     }
 
+    public function addfinish($sl){
+        $cmid = $this->cmid;
+        $modulepage = new moodle_url("/mod/timelinetest/view.php?id=$cmid");
+        if($sl%2==0){
+            $containerclass = "container left";
+        }
+        else{
+            $containerclass = "container right";
+        }
+
+        $this->finalhtml = $this->finalhtml."
+                            <div class='timeline'>
+                                <div class='$containerclass'>
+                                <div class='content'>
+                                    <h2>Finish</h2>
+                                    <a class= 'btn-info' href='$modulepage'>Return</a>
+                                </div>
+                            </div>";
+    }
+
     public function addphaseinhtml($sl,$phase,$phaselog,$phaseoptions){
         global $USER;
         $formurl = new moodle_url("/mod/timelinetest/processattempt.php");
@@ -55,7 +78,14 @@ class timelinehtmlbuilder{
 
         // If current phase status is in view then a form is needed. If the phase was previously attempted then form is not needed
         $currentphasestatus = $phaselog->status;
-        $phaseresponse = $phaselog->phaseresponse;
+
+        if($phase->type == "Informative"){
+            $phaseresponse = "";
+        }
+        else{
+            $phaseresponse = ":<strong>".$phaselog->phaseresponse."</strong>";
+        }
+
         $timelinetestid = $phase->timelinetestid;
         $timelinephase = $phase->id;
         $optionsHtml = $this->returnoptionshtml($phaseoptions,$phase->type);
@@ -88,7 +118,8 @@ class timelinehtmlbuilder{
                                     <h2>$phasetitle</h2>
                                     $phasedescription
                                     <br/>
-                                    : $phaseresponse
+                                    $phaseresponse
+                                    <br/>
                                 </div>
                             </div>";
 
