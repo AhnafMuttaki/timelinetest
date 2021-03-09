@@ -45,8 +45,9 @@ class editphase extends moodleform
         $mform->addRule('phasetitle', null, 'required', null, 'client');
 
         // Phase Description
+        $editoroption = array("subdirs"=>1,"maxfiles" => -1);
         $mform->addElement('editor', 'description', get_string('addphasedescriptionlabel', 'timelinetest'),
-            array('rows' => 15));
+            array('rows' => 15),$editoroption);
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', "", 'required', null, 'client');
         $mform->setDefault('description',array('text'=>$phase->description,'format'=>'1'));

@@ -34,8 +34,9 @@ class phase extends moodleform {
         // $mform->addHelpButton('phasetitle', 'phasetitle', 'mod_timelinetest');
         // $mform->setDefault('phasetitle', 'Please enter a title');        //Default value
 
+        $editoroption = array("subdirs"=>1,"maxfiles" => -1);
         $mform->addElement('editor', 'description', get_string('addphasedescriptionlabel', 'timelinetest'),
-            array('rows' => 15));
+            array('rows' => 15),$editoroption);
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', null, 'required', null, 'client');
 
