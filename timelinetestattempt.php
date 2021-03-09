@@ -54,6 +54,7 @@ if(count($previousAttemptLogs)>0){
     $nextphaseid = 0;
     foreach ($previousAttemptLogs as $attempt){
         $tempphase = $DB->get_record_sql("SELECT * FROM {timelinephases} WHERE id=:id ORDER BY id ASC LIMIT 1", array('id'=>$attempt->timelinephase));
+        $tempphase->attemptlogid = $attempt->id;
         array_push($timelinephases,$tempphase);
         $lastattemptstatus = $attempt->status;
         $nextphaseid = $attempt->nextphase;
@@ -64,10 +65,12 @@ if(count($previousAttemptLogs)>0){
         if($nextphaseid !== "-1"){
             // add next phase
             $tempphase = $DB->get_record_sql("SELECT * FROM {timelinephases} WHERE id=:id ORDER BY id ASC LIMIT 1", array('id'=>$nextphaseid));
-            array_push($timelinephases,$tempphase);
-            //        Insert viewed log
-            $attempttestlog->savelog($timelinetestid,$tempphase->id,$userid,"",0,0,0);
 
+            //        Insert viewed log
+            $attemptlogid = $attempttestlog->savelog($timelinetestid,$tempphase->id,$userid,"",0,0,0);
+            $tempphase->attemptlogid = $attemptlogid;
+
+            array_push($timelinephases,$tempphase);
         }
         else{
             // add finish
@@ -89,7 +92,9 @@ else{
     $firstphase = $DB->get_record_sql("SELECT * FROM {timelinephases} WHERE timelinetestid=:timelinetestid ORDER BY id ASC LIMIT 1", array('timelinetestid'=>$timelinetestid));
     array_push($timelinephases,$firstphase);
     //        Insert viewed log
-    $attempttestlog->savelog($timelinetestid,$firstphase->id,$userid,"",0,0,0);
+    $attemptlogid = $attempttestlog->savelog($timelinetestid,$firstphase->id,$userid,"",0,0,0);
+    $firstphase->attemptlogid = $attemptlogid;
+    array_push($timelinephases,$firstphase);
     //        Initiate Marking
     $markingmanager->initiatemarking();
     //        Add phase in timeline HTML

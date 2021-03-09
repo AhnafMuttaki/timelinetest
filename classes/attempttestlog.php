@@ -38,7 +38,8 @@ class attempttestlog {
         $attemptlog->obtainedmark = $obtainedmark;
         $attemptlog->timecreated = time();
 
-        $DB->insert_record("timelineattemptlog", $attemptlog);
+        $recordid = $DB->insert_record("timelineattemptlog", $attemptlog);
+        return $recordid;
     }
 
     public function updatelog(

@@ -4,6 +4,7 @@ require_once("../../config.php");
 require_once($CFG->dirroot. '/mod/timelinetest/classes/attempttestlog.php');
 require_once($CFG->dirroot. '/mod/timelinetest/classes/markingmanager.php');
 
+$attemptlogid = optional_param('attemptlogid', 0, PARAM_INT); // Course Module ID
 $cmid = optional_param('cmid', 0, PARAM_INT); // Course Module ID
 $userid = optional_param('userid', 0, PARAM_INT); // USER ID
 $timelinetestid = optional_param('timelinetestid', 0, PARAM_INT); // Timelinetestid
@@ -47,7 +48,12 @@ if(!$timelinephase = $DB->get_record_sql("SELECT * FROM {timelinephases} WHERE i
     throw new ddl_exception(get_string('error:invalid phase', 'timelinetest'));
 }
 
-if(!$attemptlog = $DB->get_record_sql("SELECT * FROM {timelineattemptlog} WHERE timelinetestid=:timelinetestid AND timelinephase=:phaseid AND userid=:userid", array('timelinetestid'=>$timelinetestid,'phaseid'=>$phaseid,'userid'=>$USER->id))){
+//if(!$attemptlog = $DB->get_record_sql("SELECT * FROM {timelineattemptlog} WHERE timelinetestid=:timelinetestid AND timelinephase=:phaseid AND userid=:userid", array('timelinetestid'=>$timelinetestid,'phaseid'=>$phaseid,'userid'=>$USER->id))){
+//    // Timeline test not found
+//    throw new ddl_exception(get_string('error:invalid attempt', 'timelinetest'));
+//}
+
+if(!$attemptlog = $DB->get_record_sql("SELECT * FROM {timelineattemptlog} WHERE id=:attemptlogid", array('attemptlogid'=>$attemptlogid))){
     // Timeline test not found
     throw new ddl_exception(get_string('error:invalid attempt', 'timelinetest'));
 }
@@ -77,4 +83,4 @@ $attempttestlog->updatelog($timelinetestid,$phaseid,$USER->id,$phaseresponse,$ne
 $markingmanager = new markingmanager($USER->id,$timelinetestid);
 $markingmanager->updatemarking($obtainedmark);
 
-redirect($CFG->wwwroot."/mod/timelinetest/timelinetestattempt.php?id=$cmid", get_string('success:attemptsave', 'timelinetest'));
+redirect($CFG->wwwroot."/mod/timelinetest/timelinetestattempt.php?id=$cmid", null);

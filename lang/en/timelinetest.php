@@ -67,3 +67,5 @@ $string['error:invalid phase'] = 'Invalid timeline phase.';
 $string['error:invalid attempt'] = 'Attempt log not found.';
 $string['error:invalid option'] = 'Chosen option not found.';
 $string['success:attemptsave'] = 'Successfully saved phase data.';
+$string['validationmsg:correctnull'] = 'Please choose correct answer.';
+$string['validationmsg:nextphasenull'] = 'Please choose next phase.';

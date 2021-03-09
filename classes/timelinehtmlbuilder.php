@@ -14,9 +14,9 @@ class timelinehtmlbuilder{
         global $DB;
         foreach ($timelinephases as $key=>$phase){
             if($phase->id !== "-1"){
-                $phaselog = $DB->get_record_sql("SELECT * FROM {timelineattemptlog} WHERE timelinephase=:timelinephase AND userid=:userid", array('timelinephase'=>$phase->id,'userid'=>$userid));
+                $phaselog = $DB->get_record_sql("SELECT * FROM {timelineattemptlog} WHERE timelinephase=:timelinephase AND userid=:userid AND id=:attemptlogid", array('timelinephase'=>$phase->id,'userid'=>$userid,'attemptlogid'=>$phase->attemptlogid));
                 $phaseoptions = $DB->get_records_sql("SELECT * FROM {timelineoptions} WHERE timelinephase=:timelinephase", array('timelinephase'=>$phase->id));
-                $this->addphaseinhtml($key,$phase,$phaselog,$phaseoptions);
+                $this->addphaseinhtml($key,$phase,$phaselog,$phaseoptions,$phase->attemptlogid);
             }
             else{
                 $this->addfinish($key);
@@ -64,7 +64,7 @@ class timelinehtmlbuilder{
                             </div>";
     }
 
-    public function addphaseinhtml($sl,$phase,$phaselog,$phaseoptions){
+    public function addphaseinhtml($sl,$phase,$phaselog,$phaseoptions,$attemptlogid){
         global $USER;
         $formurl = new moodle_url("/mod/timelinetest/processattempt.php");
         if($sl%2==0){
@@ -100,6 +100,7 @@ class timelinehtmlbuilder{
                                     <h2>$phasetitle</h2>
                                     $phasedescription
                                     <form action='$formurl' method='post'>
+                                        <input type='hidden' name='attemptlogid' value='$attemptlogid'>
                                         <input type='hidden' name='cmid' value='$cmid'>
                                         <input type='hidden' name='userid' value='$userid'>
                                         <input type='hidden' name='timelinetestid' value='$timelinetestid'>

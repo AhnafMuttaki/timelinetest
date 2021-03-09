@@ -7,6 +7,7 @@
 global $DB,$CFG;
 //moodleform is defined in formslib.php
 require_once("$CFG->libdir/formslib.php");
+require_once($CFG->dirroot. '/mod/timelinetest/classes/phaseinputcompletion.php');
 
 class phaselist extends moodleform
 {
@@ -43,6 +44,17 @@ class phaselist extends moodleform
             }
 
             $mform->addElement('html', "<br/>");
+
+            // Completion data
+            $phaseinputcompletion = new phaseinputcompletion($value->id,$value->timelinetestid);
+            $completionstatus = $phaseinputcompletion->getcompletionstatus();
+            if(!$completionstatus["completionstatus"]){
+                $statusmsgs = $completionstatus["completionmsg"];
+                foreach ($statusmsgs as $row){
+                    $mform->addElement('html', "<p style='color: red'>* $row</p>");
+                }
+            }
+
             $mform->addElement('html', "<hr/>");
         }
     }
