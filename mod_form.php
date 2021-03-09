@@ -17,8 +17,8 @@
 /**
  * This file contains the forms to create and edit an instance of this module
  *
- * @package   mod_assignment
- * @copyright 2007 Petr Skoda
+ * @package   mod_timelinetest
+ * @copyright 2021 Ahnaf Muttaki
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -27,10 +27,10 @@ defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
 
 /**
- * Disabled assignment settings form.
+ * Timelinetest form.
  *
  * @package   mod_timelinetest
- * @copyright 2013 Damyon Wiese
+ * @copyright 2021 Ahnaf Muttaki
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_timelinetest_mod_form extends moodleform_mod {
@@ -52,7 +52,8 @@ class mod_timelinetest_mod_form extends moodleform_mod {
             $mform->setType('title', PARAM_CLEANHTML);
         }
         $mform->addRule('title', null, 'required', null, 'client');
-        // End
+
+        // This standard course module is moodle requiremnt. Need to check input is handled by moodle or not
         $this->standard_coursemodule_elements();
         // buttons
         $this->add_action_buttons();

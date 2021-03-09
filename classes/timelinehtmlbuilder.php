@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Timeline HTML Code Builder.
+ *
+ * @package   mod_timelinetest
+ * @copyright 2021 Ahnaf Muttaki
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class timelinehtmlbuilder{
     private $finalhtml;
     private $cmid;
@@ -10,6 +17,12 @@ class timelinehtmlbuilder{
         $this->cmid = $cmid;
     }
 
+    /**
+     * Called to get timeline html code
+     * @param $timelinephases array of timeline phases
+     * @param $userid int ID of USER
+     * @return String HTML time line code
+     */
     public function buildtimeline($timelinephases,$userid){
         global $DB;
         foreach ($timelinephases as $key=>$phase){
@@ -25,6 +38,12 @@ class timelinehtmlbuilder{
         return $this->finalhtml;
     }
 
+    /**
+     * Called to add option htmls
+     * @param $options array of options for a phase
+     * @param $phasetype String Type of the phase
+     * @return String HTML code
+     */
     public function returnoptionshtml($options,$phasetype){
         $optionsHTML = "";
         if($phasetype == "Informative"){
@@ -44,6 +63,11 @@ class timelinehtmlbuilder{
         return $optionsHTML;
     }
 
+    /**
+     * Called to get finish block
+     * @param $sl int Serial no of the timeline block
+     * @return void
+     */
     public function addfinish($sl){
         $cmid = $this->cmid;
         $modulepage = new moodle_url("/mod/timelinetest/view.php?id=$cmid");
@@ -64,6 +88,15 @@ class timelinehtmlbuilder{
                             </div>";
     }
 
+    /**
+     * Called to add phase in html
+     * @param $sl int Serial no of the timeline block
+     * @param $phase StdClass Current Phase
+     * @param $phaselog StdClass Phase Attempt Log
+     * @param $phaseoptions array Options of the phase
+     * @param $attemptlogid int Log id of current attempt
+     * @return void
+     */
     public function addphaseinhtml($sl,$phase,$phaselog,$phaseoptions,$attemptlogid){
         global $USER;
         $formurl = new moodle_url("/mod/timelinetest/processattempt.php");

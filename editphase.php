@@ -1,7 +1,8 @@
 <?php
 require_once("../../config.php");
 require_once($CFG->dirroot. '/mod/timelinetest/classes/form/editphase.php');
-require_login();
+
+// Get params
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID
 $phaseid = optional_param('phaseid', 0, PARAM_INT); // Phase ID
 
@@ -42,6 +43,7 @@ if(!$phaselist){
     print_error('invalidcoursemodule');
 }
 
+// Initiate Form
 $customdata = array();
 $customdata["cmid"] = $id;
 $customdata["phaselist"] = $phaselist;
@@ -53,6 +55,7 @@ if ($mform->is_cancelled()) {
     // Go back to the manage.php page
     redirect($CFG->wwwroot.'/mod/timelinetest/view.php', get_string('formcancel', 'timelinetest'));
 } else if ($fromform = $mform->get_data()) {
+    // Handle form post
     $id = $fromform->id;
 
     $phaseid = $fromform->phaseid;

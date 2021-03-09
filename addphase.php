@@ -1,7 +1,7 @@
 <?php
 require_once("../../config.php");
 require_once($CFG->dirroot. '/mod/timelinetest/classes/form/phase.php');
-//require_login();
+// Handle Params
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID, or ...
 
 if ($id) {
@@ -25,15 +25,17 @@ $PAGE->set_url(new moodle_url('/mod/timelinetest/addphase.php'));
 $PAGE->set_context($context);
 $PAGE->set_title($title);
 
+// Initiate Form data
 $formcustomData = array();
 $formcustomData["cmid"] = $id;
 $actionUrl = new moodle_url("/mod/timelinetest/addphase.php");
 $mform = new phase($actionUrl,$formcustomData,'post','',null,true,null);
 
 if ($mform->is_cancelled()) {
-    // Go back to the manage.php page
+    // Go back to the view page
     redirect($CFG->wwwroot.'/mod/timelinetest/view.php', get_string('formcancel', 'timelinetest'));
 } else if ($fromform = $mform->get_data()) {
+        // Handle form post
         $title = $fromform->phasetitle;
         $descriptiondata = $fromform->description;
         $description = $descriptiondata["text"];
@@ -75,6 +77,7 @@ if ($mform->is_cancelled()) {
                 }
             }
         }else if($phasetype == "Informative"){
+            // Informative phase has one default option to go next
             $phaseoption = new stdClass();
             $phaseoption->timelinetestid = $timelinetest->id;
             $phaseoption->timelinephase = $timelinephaseid;

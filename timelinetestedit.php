@@ -1,7 +1,6 @@
 <?php
 require_once("../../config.php");
 require_once($CFG->dirroot. '/mod/timelinetest/classes/form/phaselist.php');
-require_login();
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID, or ...
 
 if ($id) {
@@ -39,11 +38,11 @@ $title = $course->shortname . ': '.$cm->name.":"."Edit";
 $PAGE->set_context($context);
 $PAGE->set_title($title);
 
+// Initialize form
 $actionUrl = new moodle_url("/mod/timelinetest/timelinetestedit.php");
 $formcustomData = array();
 $formcustomData["cmid"] = $id;
 $formcustomData["timelinetestid"] = $timelinetest->id;
-
 $mform = new phaselist($actionUrl,$formcustomData,'post','',null,true,null);
 
 echo $OUTPUT->header();

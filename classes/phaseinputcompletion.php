@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Phase Input Completion.
+ *
+ * @package   mod_timelinetest
+ * @copyright 2021 Ahnaf Muttaki
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class phaseinputcompletion{
     private $id; //phase id
     private $timelinetestid; // id of the timelinetest
@@ -10,6 +17,11 @@ class phaseinputcompletion{
         $this->timelinetestid = $timelinetestid;
     }
 
+    /**
+     * Called to get completion status of a phase input
+     *
+     * @return void
+     */
     public function getcompletionstatus(){
         global $DB;
         $completionmsg = array();
