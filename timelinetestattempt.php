@@ -90,7 +90,6 @@ else{
     //	else:
     //        Get the first phase of the timeline test
     $firstphase = $DB->get_record_sql("SELECT * FROM {timelinephases} WHERE timelinetestid=:timelinetestid ORDER BY id ASC LIMIT 1", array('timelinetestid'=>$timelinetestid));
-    array_push($timelinephases,$firstphase);
     //        Insert viewed log
     $attemptlogid = $attempttestlog->savelog($timelinetestid,$firstphase->id,$userid,"",0,0,0);
     $firstphase->attemptlogid = $attemptlogid;
