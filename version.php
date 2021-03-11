@@ -25,5 +25,5 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2021022601;
-$plugin->requires  = 2020110300;
+$plugin->requires  = 2019111803;
 $plugin->component = 'mod_timelinetest';
