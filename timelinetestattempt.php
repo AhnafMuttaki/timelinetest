@@ -102,7 +102,7 @@ else{
 // Reverse the array so that the latest phase stays on top.
 $timelinephases = array_reverse($timelinephases);
 
-// Build timeline
+// Build timelines
 $timelinebuilder = new timelinehtmlbuilder("",$id);
 $timelinehtml = $timelinebuilder->buildtimeline($timelinephases,$userid);
 $score = $markingmanager->getmark();

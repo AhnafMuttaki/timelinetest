@@ -69,3 +69,5 @@ $string['error:invalid option'] = 'Chosen option not found.';
 $string['success:attemptsave'] = 'Successfully saved phase data.';
 $string['validationmsg:correctnull'] = 'Please choose correct answer.';
 $string['validationmsg:nextphasenull'] = 'Please choose next phase.';
+$string['validationmsg:emptyoption'] = 'Value can not be empty if the phase is Interactive.';
+$string['validationmsg:emptynextphase'] = 'Please choose next phase for all the options.';

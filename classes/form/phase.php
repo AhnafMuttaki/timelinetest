@@ -70,7 +70,8 @@ class phase extends moodleform {
         $mform->addElement('html','</div>');
 
         $this->add_action_buttons();
-        $PAGE->requires->js_call_amd('mod_timelinetest/addphase', 'init', array());
+        $emptyoptionmsg = get_string('validationmsg:emptyoption', 'timelinetest');
+        $PAGE->requires->js_call_amd('mod_timelinetest/addphase', 'init', array($emptyoptionmsg));
     }
     //Custom validation should be added here
     function validation($data, $files=null) {
