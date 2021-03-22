@@ -37,7 +37,7 @@ define(
                         }
 
                         if (invalidflag) {
-                            Notification.alert("Please choose next phase");
+                            Notification.alert(emptynextphase);
                             return false;
                         }
                     }
