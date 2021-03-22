@@ -126,10 +126,12 @@ if ($mform->is_cancelled()) {
     $url = new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id");
     redirect($url, get_string('successphasedatasave', 'timelinetest'));
 }
+$msgbanner = get_string('validationmsg:banner', 'timelinetest');
 $emptynextphase = get_string('validationmsg:emptynextphase', 'timelinetest');
+$emptycorrectanswer = get_string('validationmsg:emptycorrectanswer', 'timelinetest');
 // Initialize $PAGE, compute blocks.
 $PAGE->set_url('/mod/timelinetest/editphase.php', array('id' => $cm->id,'phaseid'=>$phaseid));
-$PAGE->requires->js_call_amd('mod_timelinetest/editphase', 'init', array($emptynextphase));
+$PAGE->requires->js_call_amd('mod_timelinetest/editphase', 'init', array($emptynextphase,$emptycorrectanswer,$msgbanner));
 $title = $course->shortname . ': '.$cm->name.":"."Edit";
 $PAGE->set_context($context);
 $PAGE->set_title($title);

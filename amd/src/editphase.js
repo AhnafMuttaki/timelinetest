@@ -19,12 +19,13 @@ define(
     ) {
 
         return {
-            init: function(emptynextphase) {
+            init: function(emptynextphase, emptycorrectanswer, msgbanner) {
                 console.log("init fired in edit phase v6");
 
                 $("#id_submitbutton").click(function() {
                     var phaseType = document.getElementById("phasetype").value;
-                    var invalidflag = false;
+                    var invalidnextphase = false;
+                    var correctansnotfound = true;
                     if (phaseType == "Interactive") {
                         var msg = "* " + emptynextphase;
                         for (var sl = 1; sl < 5; sl++) {
@@ -32,12 +33,22 @@ define(
                             console.log(nextphasevalue);
                             if (nextphasevalue == 0) {
                                 console.log("loop invoked");
-                                invalidflag = true;
+                                invalidnextphase = true;
+                            }
+
+                            var mark = document.getElementById("maxmark-" + sl).value;
+                            if (mark == 100) {
+                                correctansnotfound = false;
                             }
                         }
 
-                        if (invalidflag) {
-                            Notification.alert(emptynextphase);
+                        if (invalidnextphase) {
+                            Notification.alert(msgbanner, emptynextphase);
+                            return false;
+                        }
+
+                        if (correctansnotfound) {
+                            Notification.alert(msgbanner, emptycorrectanswer);
                             return false;
                         }
                     }
