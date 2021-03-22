@@ -106,10 +106,15 @@ $timelinephases = array_reverse($timelinephases);
 $timelinebuilder = new timelinehtmlbuilder("",$id);
 $timelinehtml = $timelinebuilder->buildtimeline($timelinephases,$userid);
 $score = $markingmanager->getmark();
+$chooseoptionvalidation = get_string('validationmsg:emptychosenoption','timelinetest');
+
+$attemptpagejs = new moodle_url("/mod/timelinetest/amd/build/attempttest.min.js");
 
 $templatecontext = (object)[
     'timelinehtml' => $timelinehtml,
     'addphaseurl' => new moodle_url("/mod/timelinetest/addphase.php?id=$id"),
+    'attemptpagejs' => $attemptpagejs,
+    'chooseoptionvalidation' => $chooseoptionvalidation,
     'score' => $score
 ];
 

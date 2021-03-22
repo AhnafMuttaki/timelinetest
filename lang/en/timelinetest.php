@@ -73,3 +73,4 @@ $string['validationmsg:nextphasenull'] = 'Please choose next phase.';
 $string['validationmsg:emptyoption'] = 'Value can not be empty if the phase is Interactive.';
 $string['validationmsg:emptynextphase'] = 'Please choose next phase for all the options.';
 $string['validationmsg:emptycorrectanswer'] = 'Please give 100% marks for atleast one option.';
+$string['validationmsg:emptychosenoption'] = 'Please choose an option.';

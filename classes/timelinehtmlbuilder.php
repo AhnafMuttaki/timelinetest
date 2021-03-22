@@ -132,7 +132,7 @@ class timelinehtmlbuilder{
                                 <div class='content'>
                                     <h2>$phasetitle</h2>
                                     $phasedescription
-                                    <form action='$formurl' method='post'>
+                                    <form action='$formurl' onsubmit='return clicksubmit()' method='post'>
                                         <input type='hidden' name='attemptlogid' value='$attemptlogid'>
                                         <input type='hidden' name='cmid' value='$cmid'>
                                         <input type='hidden' name='userid' value='$userid'>
