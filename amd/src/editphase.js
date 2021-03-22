@@ -51,6 +51,19 @@ define(
                             Notification.alert(msgbanner, emptycorrectanswer);
                             return false;
                         }
+                    } else {
+
+                        var nextphasevalue = document.getElementById("nextphase-1").value;
+                        console.log(nextphasevalue);
+                        if (nextphasevalue == 0) {
+                            console.log("loop invoked");
+                            invalidnextphase = true;
+                        }
+
+                        if (invalidnextphase) {
+                            Notification.alert(msgbanner, emptynextphase);
+                            return false;
+                        }
                     }
                 });
 
