@@ -1,6 +1,7 @@
 <?php
 require_once("../../config.php");
 require_login();
+global $USER;
 $PAGE->set_context(context_system::instance());
 $id = optional_param('id', 0, PARAM_INT); // Course Module ID, or ...
 
@@ -25,14 +26,10 @@ if(!$timelinetest){
     print_error('invalidcoursemodule');
 }
 
+
+
 // Initialize $PAGE, compute blocks.
 $PAGE->set_url('/mod/timelinetest/view.php', array('id' => $cm->id));
-$templatecontext = (object)[
-    'title' => $timelinetest->name,
-    'editurl' => new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id"),
-    'attempturl' => new moodle_url("/mod/timelinetest/timelinetestattempt.php?id=$id")
-];
-
 
 $title = $course->shortname . ': '.$cm->name;
 $PAGE->set_url(new moodle_url('/mod/timelinetest/view.php'));
@@ -40,6 +37,22 @@ $PAGE->set_context($context);
 $PAGE->set_title($title);
 
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('mod_timelinetest/manage', $templatecontext);
+
+if(has_capability('mod/timelinetest:addinstance', $context, $USER, true)){
+    $templatecontext = (object)[
+        'title' => $timelinetest->name,
+        'editurl' => new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id"),
+        'attempturl' => new moodle_url("/mod/timelinetest/timelinetestattempt.php?id=$id")
+    ];
+    echo $OUTPUT->render_from_template('mod_timelinetest/teacherview', $templatecontext);
+}
+else{
+    $templatecontext = (object)[
+        'title' => $timelinetest->name,
+        'attempturl' => new moodle_url("/mod/timelinetest/timelinetestattempt.php?id=$id")
+    ];
+    echo $OUTPUT->render_from_template('mod_timelinetest/studentview', $templatecontext);
+}
+
 echo $OUTPUT->footer();
 
