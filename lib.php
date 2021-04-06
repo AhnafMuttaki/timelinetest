@@ -49,3 +49,34 @@ function timelinetest_delete_instance($id) {
 
     return true;
 }
+
+/**
+ * Checks file access for multiple choice questions.
+ *
+ * @package  qtype_bsmultichoice
+ * @category files
+ * @param stdClass $course course object
+ * @param stdClass $cm course module object
+ * @param stdClass $context context object
+ * @param string $filearea file area
+ * @param array $args extra arguments
+ * @param bool $forcedownload whether or not force download
+ * @param array $options additional options affecting the file serving
+ * @return bool
+ */
+function mod_timelinetest_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    if($filearea == "description"){
+        $itemid = $args[0];
+        $filename = array_pop($args);
+        $filepath = '/';
+        $fs = get_file_storage();
+        $file = $fs->get_file($context->id, 'mod_timelinetest', $filearea, $itemid, $filepath, $filename);
+        if (!$file) {
+            return false;
+        }
+        send_stored_file($file, 0, 0, $forcedownload, $options);
+    }
+    else{
+        return false;
+    }
+}

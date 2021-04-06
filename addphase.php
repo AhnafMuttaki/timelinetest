@@ -37,8 +37,6 @@ if ($mform->is_cancelled()) {
 } else if ($fromform = $mform->get_data()) {
         // Handle form post
         $title = $fromform->phasetitle;
-        $descriptiondata = $fromform->description;
-        $description = $descriptiondata["text"];
 
         $phasetype = $fromform->phasetype;
         $option1 = $fromform->option1;
@@ -56,12 +54,23 @@ if ($mform->is_cancelled()) {
         $timelinephase = new stdClass();
         $timelinephase->timelinetestid = $timelinetest->id;
         $timelinephase->phasetitle = $title;
-        $timelinephase->description = $description;
+        $timelinephase->description = "";//$description;
         $timelinephase->type = $phasetype;
         $timelinephase->markthreshold = 0;
         $timelinephase->timecreated = time();
 
-        $timelinephaseid = $DB->insert_record('timelinephases', $timelinephase);
+        $timelinephase->id = $DB->insert_record('timelinephases', $timelinephase);
+
+        $descriptiondata = $fromform->description;
+        $description = $descriptiondata["text"];
+
+        $fileoptions = array("subdirs"=>true,"maxfiles"=>-1,"maxbytes"=>0);
+        $timelinephase->description = file_save_draft_area_files($descriptiondata['itemid'],
+            $context->id, 'mod_timelinetest', 'description', (int)$timelinephase->id,
+            $fileoptions, $descriptiondata["text"]);
+
+        $DB->update_record('timelinephases', $timelinephase);
+
 
         if($phasetype == "Interactive"){
             // Store Options for interactiove phase
@@ -70,7 +79,7 @@ if ($mform->is_cancelled()) {
                 if(trim($option) != ""){
                     $phaseoption = new stdClass();
                     $phaseoption->timelinetestid = $timelinetest->id;
-                    $phaseoption->timelinephase = $timelinephaseid;
+                    $phaseoption->timelinephase = $timelinephase->id;
                     $phaseoption->description = $option;
                     $phaseoption->timecreated = time();
                     $optionid = $DB->insert_record('timelineoptions', $phaseoption);
@@ -80,7 +89,7 @@ if ($mform->is_cancelled()) {
             // Informative phase has one default option to go next
             $phaseoption = new stdClass();
             $phaseoption->timelinetestid = $timelinetest->id;
-            $phaseoption->timelinephase = $timelinephaseid;
+            $phaseoption->timelinephase = $timelinephase->id;
             $phaseoption->description = "next";
             $phaseoption->timecreated = time();
             $optionid = $DB->insert_record('timelineoptions', $phaseoption);

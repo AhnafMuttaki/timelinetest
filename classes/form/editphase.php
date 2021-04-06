@@ -45,12 +45,21 @@ class editphase extends moodleform
         $mform->addRule('phasetitle', null, 'required', null, 'client');
 
         // Phase Description
+        // Draft image procure
+        $context = context_module::instance($id);
+        $draftid = file_get_submitted_draft_itemid('description');
+
+
+        $fileoptions = array("subdirs"=>true,"maxfiles"=>-1,"maxbytes"=>0);
+        $descriptionText = file_prepare_draft_area($draftid, $context->id,
+            'mod_timelinetest', 'description', $phase->id, $fileoptions,$phase->description);
+
         $editoroption = array("subdirs"=>1,"maxfiles" => -1);
         $mform->addElement('editor', 'description', get_string('addphasedescriptionlabel', 'timelinetest'),
             array('rows' => 15),$editoroption);
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', "", 'required', null, 'client');
-        $mform->setDefault('description',array('text'=>$phase->description,'format'=>'1'));
+        $mform->setDefault('description',array('text'=>$descriptionText,'format'=>'1'));
 
         // Phase Type
         $choices = array();

@@ -60,15 +60,22 @@ if ($mform->is_cancelled()) {
 
     $phaseid = $fromform->phaseid;
     $phasetitle = $fromform->phasetitle;
-    $description = $fromform->description["text"];
+//    $description = $fromform->description["text"];
     $phasetype = $fromform->phasetype;
     $markthreshold = $fromform->markthreshold;
 
+    $fileoptions = array("subdirs"=>true,"maxfiles"=>-1,"maxbytes"=>0);
+    $descriptionText = file_save_draft_area_files($fromform->description['itemid'],
+        $context->id, 'mod_timelinetest', 'description', (int)$phaseid,
+        $fileoptions, $fromform->description["text"]);
+
+//    $DB->update_record('timelinephases', $timelinephase);
+
     // update
-    $sql = "UPDATE {timelinephases} 
-            SET phasetitle = :phasetitle, 
-            description = :description, 
-            type=:phasetype, 
+    $sql = "UPDATE {timelinephases}
+            SET phasetitle = :phasetitle,
+            description = :description,
+            type=:phasetype,
             markthreshold=:markthreshold,
             timemodified=:now
             WHERE id=:id";
@@ -77,7 +84,7 @@ if ($mform->is_cancelled()) {
     $params = array();
     $params["id"] = $phaseid;
     $params["phasetitle"] = $phasetitle;
-    $params["description"] = $description;
+    $params["description"] = $descriptionText;
     $params["phasetype"] = $phasetype;
     $params["markthreshold"] = $markthreshold;
     $params["now"] = time();

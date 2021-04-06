@@ -109,6 +109,15 @@ class timelinehtmlbuilder{
         $phasetitle = $phase->phasetitle;
         $phasedescription = $phase->description;
 
+        // rewrite plugin file url
+        $context = context_module::instance($this->cmid);
+        $contextid = $context->id;
+//        $formatoptions = new stdClass();
+//        $formatoptions->noclean = true;
+//        $formatoptions->para = false;
+
+        $phasedescription = file_rewrite_pluginfile_urls($phasedescription, 'pluginfile.php', $contextid, 'mod_timelinetest', 'description', (int)$phase->id, null);
+
         // If current phase status is in view then a form is needed. If the phase was previously attempted then form is not needed
         $currentphasestatus = $phaselog->status;
 
