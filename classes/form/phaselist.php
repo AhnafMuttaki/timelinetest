@@ -24,7 +24,8 @@ class phaselist extends moodleform
         $mform->addElement('header', 'general', "Phase List($phasecount)");
 
         foreach ($timelinephases as $key=>$value){
-            $url = new moodle_url("/mod/timelinetest/editphase.php?id=$cmid&phaseid=$value->id");
+            $editurl = new moodle_url("/mod/timelinetest/editphase.php?id=$cmid&phaseid=$value->id");
+            $deleteurl = new moodle_url("/mod/timelinetest/deletephase.php?id=$cmid&phaseid=$value->id");
 
             $phasetitlelabel = get_string('phasetitlelabel', 'timelinetest');
             $mform->addElement('html', "<br/>");
@@ -32,15 +33,18 @@ class phaselist extends moodleform
             $mform->addElement('html', "<input type='text' name='phase-title-$value->id' value='$value->phasetitle' readonly>");
 
             $editbtnlabel = get_string('editbtnlabel', 'timelinetest');
+            $deletelabel = get_string('deletebtnlabel', 'timelinetest');
             if($value->type == "Interactive"){
                 $mform->addElement('html', "<br/>");
                 $mform->addElement('html', "<br/>");
-                $mform->addElement('html', "<a class='btn btn-warning' href='$url'>$editbtnlabel</a>");
+                $mform->addElement('html', "<a class='btn btn-warning' href='$editurl'>$editbtnlabel</a>");
+                $mform->addElement('html', "<a class='btn btn-danger' href='$deleteurl'>$deletelabel</a>");
             }
             else{
                 $mform->addElement('html', "<br/>");
                 $mform->addElement('html', "<br/>");
-                $mform->addElement('html', "<a class='btn btn-info' href='$url'>$editbtnlabel</a>");
+                $mform->addElement('html', "<a class='btn btn-info' href='$editurl'>$editbtnlabel</a>");
+                $mform->addElement('html', "<a class='btn btn-danger' href='$deleteurl'>$deletelabel</a>");
             }
 
             $mform->addElement('html', "<br/>");

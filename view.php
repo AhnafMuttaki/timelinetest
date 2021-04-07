@@ -42,14 +42,16 @@ if(has_capability('mod/timelinetest:addinstance', $context, $USER, true)){
     $templatecontext = (object)[
         'title' => $timelinetest->name,
         'editurl' => new moodle_url("/mod/timelinetest/timelinetestedit.php?id=$id"),
-        'attempturl' => new moodle_url("/mod/timelinetest/timelinetestattempt.php?id=$id")
-    ];
+        'attempturl' => new moodle_url("/mod/timelinetest/timelinetestattempt.php?id=$id"),
+        'gradingurl' => new moodle_url("/mod/timelinetest/gradingtable.php?id=$id")
+     ];
     echo $OUTPUT->render_from_template('mod_timelinetest/teacherview', $templatecontext);
 }
 else{
     $templatecontext = (object)[
         'title' => $timelinetest->name,
-        'attempturl' => new moodle_url("/mod/timelinetest/timelinetestattempt.php?id=$id")
+        'attempturl' => new moodle_url("/mod/timelinetest/timelinetestattempt.php?id=$id"),
+        'gradingurl' => new moodle_url("/mod/timelinetest/gradingtable.php?id=$id")
     ];
     echo $OUTPUT->render_from_template('mod_timelinetest/studentview', $templatecontext);
 }
