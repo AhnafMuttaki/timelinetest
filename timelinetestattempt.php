@@ -49,11 +49,28 @@ if(count($previousAttemptLogs)>0){
     $lastattemptstatus = 0;
     $nextphaseid = 0;
 
+    // Flag to future add phase in html
+    $addphaseintimelinehtml = true;
+
+    $currentscore = $markingmanager->getmark();
     foreach ($previousAttemptLogs as $attempt){
         // Add phase in timeline for each attempt log
         $tempphase = $DB->get_record_sql("SELECT * FROM {timelinephases} WHERE id=:id ORDER BY id ASC LIMIT 1", array('id'=>$attempt->timelinephase));
         $tempphase->attemptlogid = $attempt->id;
-        array_push($timelinephases,$tempphase);
+
+        // Check marks threshold
+        $markthreshold = $tempphase->markthreshold;
+        if($currentscore<$markthreshold){
+            // As current score is less than marks threshold it will finish the test
+            $finishphase = new stdClass();
+            $finishphase->id = "-1";
+            array_push($timelinephases,$finishphase);
+            $addphaseintimelinehtml = false;
+        }
+
+        if($addphaseintimelinehtml){
+            array_push($timelinephases,$tempphase);
+        }
 
         $lastattemptstatus = $attempt->status;
         $nextphaseid = $attempt->nextphase;
@@ -70,8 +87,23 @@ if(count($previousAttemptLogs)>0){
             $attemptlogid = $attempttestlog->savelog($timelinetestid,$tempphase->id,$userid,"",0,0,0);
             $tempphase->attemptlogid = $attemptlogid;
 
+            // Check marks threshold
+            $markthreshold = $tempphase->markthreshold;
+
+
+            if($currentscore<$markthreshold){
+                // As current score is less than marks threshold it will finish the test
+                $finishphase = new stdClass();
+                $finishphase->id = "-1";
+                array_push($timelinephases,$finishphase);
+                $addphaseintimelinehtml = false;
+            }
+
             // Add in timeline list
-            array_push($timelinephases,$tempphase);
+            if($addphaseintimelinehtml){
+                array_push($timelinephases,$tempphase);
+            }
+
         }
         else{
             // If next phase is "finish" (phaseid = -1)

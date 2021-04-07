@@ -62,15 +62,6 @@ class editphase extends moodleform
         $mform->setDefault('description',array('text'=>$descriptionText,'format'=>'1'));
 
         // Phase Type
-//        $choices = array();
-//        $choices[''] = get_string('phasetypeoptiondefault', 'timelinetest');
-//        $choices['Informative'] = get_string('phasetypeoption1', 'timelinetest');
-//        $choices['Interactive'] = get_string('phasetypeoption2', 'timelinetest');
-//
-//        $mform->addElement('select', 'phasetype', get_string('phasetypelabel', 'timelinetest'),$choices,array('id'=>'phasetype')); // Add elements to your form
-//        $mform->addRule('phasetype', null, 'required', null, 'client');
-//        $mform->setDefault('phasetype',$phase->type);
-
         $mform->addElement('text', 'phasetype', get_string('phasetypelabel', 'timelinetest'), 'maxlength="10" size="10" readonly="true"');
         $mform->setDefault('phasetype',$phase->type);
 
